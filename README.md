@@ -39,6 +39,8 @@ Expected output:
 [array([0.5, 0. , 0. , 0.5]), array([0.25, 0.25, 0.25, 0.25])]
 ```
 
+!!! It is highly recommended provide version info on key modules or requiremnets.txt to best reproduce the working enviroment.
+
 # More on qasm string
 Euriqa runs on an older version of qiskit might not recognize the qasm string generated from newer version of qiskit even if both of them are OpenQASM2.0. In order to test if your qasm string works on the eurqia system, please test your qasm strings with correct qiskit version. The following is recommended procedure.
 
