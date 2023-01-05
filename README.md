@@ -91,6 +91,6 @@ if loaded:
         raise ValueError(f'Unitary differences ({diff}) greater than threashold:{threashold}.')
 ```
 
-
+The idea is that two unitaries should be identical (within threshold) update to a global phase.  `op.data/op.data[0,2]-m0/m0[0,2]` is to take care of phase issue and might not work with your case if element `[0,2]` is too small or not exist. Please modify accordingly if necessary.
 
 
