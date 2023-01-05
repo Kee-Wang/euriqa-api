@@ -24,7 +24,7 @@ qc1.rx(np.pi/2,0)
 qasm_circuits = [c.qasm() for c in  [qc0, qc1]]
 
 
-# Do necessary preprocessing to generate list of circuits in OpenQASM2.0 string format.
+# Do necessary preprocessing including basis transformation to generate list of circuits in OpenQASM2.0 string format.
 # For local test:
 probs_local = run_on_EURIQA(qasm_circuits,run_simulation_local=True)
 # For actual experiment:
