@@ -2,7 +2,7 @@
 
 This guides provides the minimal info for external users to use the EURIQA API correctly.
 
-EURIQA provides the following API interface which submits a list of circuits and collect the list of probabiilty histograms:
+EURIQA provides the API interface which submits a list of circuits and collect the list of probabiilty histograms:
 `prob_vector = run_on_EURIQA(circuits, num_shots)`
 
 For the purpose of code development, one can use the following example.
@@ -38,3 +38,57 @@ Expected output:
 ```
 [array([0.5, 0. , 0. , 0.5]), array([0.25, 0.25, 0.25, 0.25])]
 ```
+
+# More on qasm string
+Euriqa runs on an older version of qiskit might not recognize the qasm string generated from newer version of qiskit even if both of them are OpenQASM2.0. In order to test if your qasm string works on the eurqia system, please test your qasm strings with correct qiskit version. The following is recommended procedure.
+
+### 1. Generate qasm string with the working code (which presumebaly uses the newer version of qiskit) and save it locally and save the unitary with additional extension `.npy`.
+```
+qc0.remove_final_measurements()
+op0 = qiskit.quantum_info.Operator(qc0).data
+with open(path+'/qc0.qasm','w') as f:
+    f.write(qc0.qasm())
+np.save(path+'/qc0.qasm.npy',op0)
+
+```
+
+### 2. Create a fresh virtual env and install the specific qiskit version use the following:
+```
+pip install qiskit-terra==0.16.1
+```
+so that the version result of `qiskit.__qiskit_version__` is: `{'qiskit-terra': '0.16.1', 'qiskit-aer': None, 'qiskit-ignis': None, 'qiskit-ibmq-provider': None, 'qiskit-aqua': None, 'qiskit': None}`.
+
+
+### 3. Source the new virtual env and try to load the new qasm circuit and compare the unitaries
+Comparing unitaries generated with newer version of qiskit and older version of qiskit can guaratee the circuits are identical.
+A script snippet is like this:
+```
+qasm_path = path+'/qc0.qasm'
+with open(qasm_path,'r') as f:
+    c0_str  = f.readlines()
+c0_qasm = ''.join(c0_str)
+cq = qiskit.QuantumCircuit.from_qasm_str(c0_qasm)
+unitary_path = qasm_path + '.npy'
+
+try:
+    # By default unitary is named as qasm file plus .npy
+    with open(unitary_path,'rb') as f:
+        m0=np.load(f)
+    loaded = True
+except:
+    warnings.warn(f'No unitary file loaded/found from {unitary_path} so I did not comare unitarties between provided unitary.')
+    loaded = False
+
+if loaded:
+    threashold = 1e-6
+    op = qiskit.quantum_info.Operator(cq)
+    diff = np.linalg.norm(op.data/op.data[0,2]-m0/m0[0,2])
+
+    if diff > threashold:
+    #     print(f'Unitary differences ({diff}) greater than threashold:{threashold}.')
+        raise ValueError(f'Unitary differences ({diff}) greater than threashold:{threashold}.')
+```
+
+
+
+
