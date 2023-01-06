@@ -27,7 +27,7 @@ qasm_circuits = [c.qasm() for c in  [qc0, qc1]]
 # Do necessary preprocessing including basis transformation to generate list of circuits in OpenQASM2.0 string format.
 # For local test:
 probs_local = run_on_EURIQA(qasm_circuits,run_simulation_local=True)
-# For actual experiment:
+# For actual experiment (this shows what it looks like to experimentalists, api calls to the actual machine is only accessable to EURIQA internal computers):
 # probs_exp = run_on_EURIQA(qasm_circuits,num_shots=100)
 
 print(probs_local)
