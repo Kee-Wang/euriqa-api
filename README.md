@@ -1,6 +1,6 @@
 # EURIQA API Guide
 
-This guides provides the minimal info for external users to use the EURIQA API correctly.
+This guides provides the minimal info for external users to use the EURIQA-blue API correctly.
 
 EURIQA provides the API interface which submits a list of circuits and collect the list of probabiilty histograms:
 `prob_vector = run_on_EURIQA(circuits, num_shots)`
