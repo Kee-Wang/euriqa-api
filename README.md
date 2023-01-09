@@ -3,7 +3,7 @@
 This guides provides the minimal info for external users to use the EURIQA-blue API correctly.
 
 EURIQA provides the API interface which submits a list of circuits and collect the list of probabiilty histograms:
-`prob_vector = run_on_EURIQA(circuits, num_shots)`
+`prob_vector = run_on_EURIQA(circuits, num_shots)`. More inforamtion returns are possible but need to coordinate with the experiment operator in advance.
 
 For the purpose of code development, one can use the following example.
 Please refer to the `euriqa_interface.py` for the docstrings of `run_on_EURIQA` for any input/output format issue.
