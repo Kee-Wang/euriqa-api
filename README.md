@@ -59,6 +59,7 @@ np.save(path+'/qc0.qasm.npy',op0)
 pip install qiskit-terra==0.16.1
 ```
 so that the version result of `qiskit.__qiskit_version__` is: `{'qiskit-terra': '0.16.1', 'qiskit-aer': None, 'qiskit-ignis': None, 'qiskit-ibmq-provider': None, 'qiskit-aqua': None, 'qiskit': None}`.
+Also the `numpy` version is `0.18.1`.
 
 
 ### 3. Source the new virtual env and try to load the new qasm circuit and compare the unitaries
