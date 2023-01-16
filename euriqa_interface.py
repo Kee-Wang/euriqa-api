@@ -25,6 +25,7 @@ def run_on_EURIQA(qasm_circuits:typing.List[str], num_shots:int=100, run_simulat
     if run_simulation_local:
         circuits = [qiskit.QuantumCircuit.from_qasm_str(qasm) for qasm in qasm_circuits]
         prob_vector = [abs(qiskit.quantum_info.Statevector(cq).data)**2 for cq in circuits]
+        #older versions might use abs(qiskit.quantum_info.Statevector.from_instruction(cq))**2
 
     else:
         raise ValueError('The connection to EURIQA hardware is not implemented yet.')
