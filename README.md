@@ -44,15 +44,22 @@ Expected output:
 # More on qasm string
 Euriqa runs on an older version of qiskit might not recognize the qasm string generated from newer version of qiskit even if both of them are OpenQASM2.0. In order to test if your qasm string works on the eurqia system, please test your qasm strings with correct qiskit version. The following is recommended procedure.
 
-### 1. Generate qasm string with the working code (which presumebaly uses the newer version of qiskit) and save it locally and save the unitary with additional extension `.npy`.
+### 1. Generate qasm string with the working code (which presumebaly uses the newer version of qiskit) and save it locally and save the probability histogram vector for later comparison.
+
+Below is the example for generating and saving the qasm string.
 ```
 qc0.remove_final_measurements()
-op0 = qiskit.quantum_info.Operator(qc0).data
 with open(path+'/qc0.qasm','w') as f:
     f.write(qc0.qasm())
-np.save(path+'/qc0.qasm.npy',op0)
 
 ```
+Depending on your qiksit version, you can generate exact probability histogram using 
+`abs(qiskit.quantum_info.Statevector(cq).data)**2`
+ or `abs(qiskit.quantum_info.Statevector.from_instruction(cq))**2` for newer and older qiskit version repectively.
+ Then you can save the result locally for later comparison.
+
+
+
 
 ### 2. Create a fresh virtual env and install the specific qiskit version use the following:
 ```
@@ -62,10 +69,6 @@ so that the version result of `qiskit.__qiskit_version__` is: `{'qiskit-terra': 
 Also the `numpy` version is `0.18.1`.
 
 
-### 3. Source the new virtual env and try to load the new qasm circuit and compare the unitaries
-Comparing unitaries generated with newer version of qiskit and older version of qiskit can guaratee the circuits are identical.
-Depending on your qiksit version, you might use 
-`abs(qiskit.quantum_info.Statevector(cq).data)**2`
- or `abs(qiskit.quantum_info.Statevector.from_instruction(cq))**2` for newer and older qiskit version repectively.
-    
+### 3. Source the new virtual env and try to load the new qasm circuit and compare the probability histogram
+Comparing the probability histogram generated with your version of qiskit and older version (0.18.1) of qiskit to make sure they result in the same probability histogram.
 
