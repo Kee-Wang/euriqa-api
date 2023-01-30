@@ -64,34 +64,8 @@ Also the `numpy` version is `0.18.1`.
 
 ### 3. Source the new virtual env and try to load the new qasm circuit and compare the unitaries
 Comparing unitaries generated with newer version of qiskit and older version of qiskit can guaratee the circuits are identical.
-A script snippet is like this:
-```
-qasm_path = path+'/qc0.qasm'
-with open(qasm_path,'r') as f:
-    c0_str  = f.readlines()
-c0_qasm = ''.join(c0_str)
-cq = qiskit.QuantumCircuit.from_qasm_str(c0_qasm)
-unitary_path = qasm_path + '.npy'
-
-try:
-    # By default unitary is named as qasm file plus .npy
-    with open(unitary_path,'rb') as f:
-        m0=np.load(f)
-    loaded = True
-except:
-    warnings.warn(f'No unitary file loaded/found from {unitary_path} so I did not comare unitarties between provided unitary.')
-    loaded = False
-
-if loaded:
-    threashold = 1e-6
-    op = qiskit.quantum_info.Operator(cq)
-    diff = np.linalg.norm(op.data/op.data[0,2]-m0/m0[0,2])
-
-    if diff > threashold:
-    #     print(f'Unitary differences ({diff}) greater than threashold:{threashold}.')
-        raise ValueError(f'Unitary differences ({diff}) greater than threashold:{threashold}.')
-```
-
-The idea is that two unitaries should be identical (within threshold) update to a global phase.  The division in `op.data/op.data[0,2]-m0/m0[0,2]` is to take care of phase issue and might not work with your case if element `[0,2]` is too small or not exist. Please modify accordingly if necessary.
-
+Depending on your qiksit version, you might use 
+`abs(qiskit.quantum_info.Statevector(cq).data)**2`
+ or `abs(qiskit.quantum_info.Statevector.from_instruction(cq))**2` for newer and older qiskit version repectively.
+    
 
